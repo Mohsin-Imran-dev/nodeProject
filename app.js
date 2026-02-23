@@ -24,7 +24,9 @@ if (!MONGO_URL) {
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
   collection: "sessions",
-  mongoOptions: { sslValidate: false } // add this line if TLS fails
+  mongoOptions: {
+    sslValidate: false, // disable TLS validation for session store
+  },
 });
 app.use(express.static(path.join(rootDir, "public")));
 app.use(express.urlencoded({ extended: true }));
