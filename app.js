@@ -17,7 +17,7 @@ app.set("views", "views");
 const store = new MongoDBStore({
   uri: DB_PATH,
   collection: "sessions",
-})
+});
 app.use(express.static(path.join(rootDir, "public")));
 app.use(express.urlencoded());
 app.use(
@@ -30,9 +30,7 @@ app.use(
 );
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.isLoggedIn;
-  res.locals.userType = req.session.user
-    ? req.session.user.userType
-    : null;
+  res.locals.userType = req.session.user ? req.session.user.userType : null;
   next();
 });
 app.use((req, res, next) => {
@@ -52,10 +50,13 @@ app.use("/host", (req, res, next) => {
 app.use("/host", hostRouter);
 app.use(errorsController.pageNotFound);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 mongoose
-  .connect(DB_PATH)
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to mongo");
     app.listen(PORT, () => {
