@@ -9,7 +9,7 @@
   "scripts": {
   "tailwind": "tailwindcss -i ./views/input.css -o ./public/style.css",
   "server": "node app.js",
-  "dev": "concurrently \"npm run tailwind\" \"nodemon app.js\"",
+  "dev": "concurrently \"npm run tailwind --watch\" \"nodemon app.js\"",
   "start": "npm run tailwind && node app.js"
 },
   "devDependencies": {
