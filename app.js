@@ -22,7 +22,7 @@ if (!MONGO_URL) {
 }
 
 const store = new MongoDBStore({
-  uri: MONGO_URL,      // use env variable here too
+  uri: process.env.MONGO_URL, // not DB_PATH
   collection: "sessions",
 });
 

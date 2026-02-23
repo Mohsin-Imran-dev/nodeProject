@@ -7,10 +7,11 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "tailwind": "tailwindcss -i ./views/input.css -o ./public/style.css --watch",
-    "server": "nodemon app.js",
-    "start": "concurrently \"npm run tailwind\" \"npm run server\""
-  },
+  "tailwind": "tailwindcss -i ./views/input.css -o ./public/style.css",
+  "server": "node app.js",
+  "dev": "concurrently \"npm run tailwind\" \"nodemon app.js\"",
+  "start": "npm run tailwind && node app.js"
+},
   "devDependencies": {
     "autoprefixer": "^10.4.22",
     "concurrently": "^9.2.1",
