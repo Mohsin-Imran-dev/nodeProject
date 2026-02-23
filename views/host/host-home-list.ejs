@@ -1,0 +1,44 @@
+<%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <main>
+     
+    <h1 class="text-2xl text-center mt-7 ">Hey Host! Here are your Homes ❤️</h1>
+     <ul class="mt-6 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+      <% registeredHome.forEach((home) => { %>
+      <li class="bg-white rounded-lg my-0 mx-auto shadow-md hover:shadow-lg overflow-hidden transform cursor-pointer border-t-2 border-cyan-600 w-[95%] md:w-full">
+        <div class="relative h-40 overflow-hidden bg-gray-200">
+        <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
+        </div>
+        <div class="p-4">
+        <h2 class="text-base font-semibold text-gray-900"><%= home.houseName %></h2>
+        <p class="text-gray-500 text-xs mt-1">📍 <%= home.location %></p>
+        <p class="text-gray-600 text-sm mt-2"><%= home.description %></p>
+        <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+          <span class="text-lg font-bold text-cyan-600">Rs. <%= home.price %></span>
+          <span class="flex items-center gap-1 bg-amber-50 text-amber-700 px-2 py-1 rounded text-xs font-medium">⭐ <%= home.rating %></span>
+        </div>
+        
+        <a href="/host/edit-home/<%=home._id%>?editing=true" class="mt-4 w-full block text-center bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all duration-200">Edit</a>
+        <form action="/host/delete-home/<%= home._id %>" method="POST">
+          <button type="submit" class="mt-4 w-full bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 block text-center">Delete</button>
+        </form>
+        </div>
+      </li>
+      <% }); %>
+    </ul>
+    <div
+  class="mt-20 mb-20 py-8 w-[90%] max-w-[400px] mx-auto text-center border-2 rounded-2xl shadow-xl"
+>
+
+      <a
+        href="/host/add-home"
+        class="relative text-center self-center inline-block hover:underline text-white pb-1 w-full sm:w-auto">
+        Add Home
+      </a>
+       
+    </div>
+    </main>
+  </body>
+</html>

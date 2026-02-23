@@ -1,0 +1,65 @@
+<%- include('../partials/head') %>
+</head>
+
+<body>
+  <%- include('../partials/nav') %>
+
+  <main class="pb-30">
+    <% if (favouriteHomes.length === 0) { %>
+      <p class="text-center text-3xl text-gray-500 mt-20">
+        You have no favorite homes yet.
+      </p>
+    <% } else { %>
+
+      <h1 class="text-2xl text-center mt-7 mb-5">
+        Here are our Favorite List:
+      </h1>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:mx-10 mx-4 gap-4 max-w-6xl md:px-0">
+        <% favouriteHomes.forEach((home) => { %>
+
+          <li class="bg-white rounded-lg shadow-md hover:shadow-lg overflow-hidden cursor-pointer border-t-2 border-cyan-600 w-full">
+            <div class="relative h-40 overflow-hidden bg-gray-200">
+              <img
+                src="<%= home.photoUrl %>"
+                alt="<%= home.houseName %>"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <div class="p-4">
+              <h2 class="text-base font-semibold text-gray-900">
+                <%= home.houseName %>
+              </h2>
+
+              <p class="text-gray-500 text-xs mt-1">
+                📍 <%= home.location %>
+              </p>
+
+              <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                <span class="text-lg font-bold text-cyan-600">
+                  Rs. <%= home.price %>
+                </span>
+                <span class="flex items-center gap-1 bg-amber-50 text-amber-700 px-2 py-1 rounded text-xs font-medium">
+                  ⭐ <%= home.rating %>
+                </span>
+              </div>
+
+              <form action="/favourites/delete/<%= home._id %>" method="POST">
+                <button
+                  type="submit"
+                  class="mt-5 block mx-auto bg-red-600 hover:bg-red-700 text-sm text-white font-semibold py-2 px-4 rounded-2xl transition-all duration-200"
+                >
+                  Delete from Favorites
+                </button>
+              </form>
+            </div>
+          </li>
+
+        <% }); %>
+      </ul>
+
+    <% } %>
+  </main>
+</body>
+</html>

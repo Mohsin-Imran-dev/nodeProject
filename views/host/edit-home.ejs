@@ -1,0 +1,43 @@
+<%- include('../partials/head') %>
+  </head>
+
+  <body>
+    <%- include('../partials/nav') %>
+      <main class="flex items-center mt-10 md:justify-center md:items-center flex-col">
+
+        <h1 class="text-3xl text-center ">
+          <%= editing ? "Edit Your Home" : "Register your Home" %>
+        </h1>
+        <div class="mt-10 md:mt-6 border-2 px-6 py-1 rounded-2xl inline shadow-sm shadow-cyan-950 max-w-md w-90 md:w-[35%]">
+          <form class="flex flex-col w-full p-5" action="/host/<%= editing ? 'edit-home' : 'add-home' %>" method="POST">
+            <input
+              class="border-b-2 outline-0 border-b-blue-600 pl-2 w-full pt-3 pb-1 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500"
+              type="hidden" name="_id" value="<%= editing? home._id: '' %>" placeholder="Enter name of your house" />
+            <input
+              class="border-b-2 outline-0 border-b-blue-600 pl-2 w-full pt-3 pb-1 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500"
+              type="text" name="houseName" value="<%= editing? home.houseName: '' %>"
+              placeholder="Enter name of your house" />
+            <input
+              class="border-b-2 outline-0 border-b-blue-600 pl-2 w-full pt-3 pb-1 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500"
+              type="text" name="price" value="<%= editing? home.price: '' %>" placeholder="Price Per Night" />
+            <input
+              class="border-b-2 outline-0 border-b-blue-600 pl-2 w-full pt-3 pb-1 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500"
+              type="text" name="location" value="<%= editing? home.location: '' %>" placeholder="Enter Location" />
+            <input
+              class="border-b-2 outline-0 border-b-blue-600 pl-2 w-full pt-3 pb-1 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500"
+              type="text" value="<%= editing? home.rating: '' %>" name="rating" placeholder="Enter Rating" />
+            <input
+              class="border-b-2 outline-0 border-b-blue-600 pl-2 w-full pt-3 pb-1 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500"
+              type="text" name="photoUrl" value="<%= editing? home.photoUrl: '' %>" placeholder="Enter Photo URL" />
+            <textarea
+              class="border-2 outline-0 border-blue-600 pl-2 mt-5 w-full pt-3 pb-3 text-sm md:text-md placeholder:text-sm placeholder:text-gray-500 rounded-md resize-none min-h-24"
+              name="description" placeholder="Describe your home"><%= editing? home.description: '' %></textarea>
+            <input type="submit"
+              class="self-start border-2 mt-8 rounded-md cursor-pointer h-8 bg-blue-500 text-white hover:bg-blue-600 w-full"
+              value="<%= editing ? 'Update Home' : 'Add Home' %>" />
+          </form>
+        </div>
+      </main>
+  </body>
+
+  </html>

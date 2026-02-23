@@ -1,0 +1,142 @@
+<%- include('../partials/head') %>
+  </head>
+
+  <body class=" min-h-screen">
+    <%- include('../partials/nav') %>
+      <main class="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 py-8">
+
+        <div class="w-full max-w-md">
+          <!-- Header with decorative element -->
+          <div class="text-center mb-8">
+            <div class="inline-block p-3 bg-white rounded-2xl shadow-lg mb-4">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+              </svg>
+            </div>
+            <h1 class="text-4xl font-bold text-shadow-white mb-2">Create Account</h1>
+            <p class="text-shadow-white">Join our community today</p>
+          </div>
+
+          <!-- Form Container -->
+          <div class="bg-white backdrop-blur-lg rounded-2xl shadow-md shadow-blue-100 p-8 border border-white/20">
+           <%- include('../partials/error') %>
+
+                <form class="flex flex-col space-y-5" action="/signup" method="POST">
+                  <!-- Name Fields - Responsive grid -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="relative">
+                      <input
+                        class="w-full px-4 py-3 text-sm border-2 text-gray-700 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all peer placeholder-transparent"
+                        type="text" name="firstName"
+                        value="<%= typeof oldInput !== 'undefined'? oldInput.firstName: '' %>" placeholder="First Name"
+                        required id="firstName" />
+                      <label for="firstName"
+                        class="absolute left-4 -top-2.5 bg-white px-2 text-xs font-medium text-gray-600 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-blue-600 peer-focus:bg-white">
+                        First Name
+                      </label>
+                    </div>
+
+                    <div class="relative">
+                      <input
+                        class="w-full px-4 py-3 text-sm border-2 text-gray-700 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all peer placeholder-transparent"
+                        type="text" value="<%= typeof oldInput !== 'undefined'? oldInput.lastName: '' %>"
+                        name="lastName" placeholder="Last Name" id="lastName" />
+                      <label for="lastName"
+                        class="absolute left-4 -top-2.5 bg-white px-2 text-xs font-medium text-gray-600 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-blue-600 peer-focus:bg-white">
+                        Last Name
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Email Field -->
+                  <div class="relative">
+                    <input
+                      class="w-full px-4 py-3 text-sm border-2 text-gray-700 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all peer placeholder-transparent"
+                      type="email" name="email" value="<%= typeof oldInput !== 'undefined'? oldInput.email: '' %>"
+                      placeholder="test@pop.com" required id="email" />
+                    <label for="email"
+                      class="absolute left-4 -top-2.5 bg-white px-2 text-xs font-medium text-gray-600 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-blue-600 peer-focus:bg-white">
+                      Email Address
+                    </label>
+                  </div>
+
+                  <!-- Password Fields -->
+                  <div class="relative">
+                    <input
+                      class="w-full px-4 py-3 text-sm border-2 text-gray-700 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all peer placeholder-transparent"
+                      type="password" name="password" placeholder="Enter Your Password" required id="password" />
+                    <label for="password"
+                      class="absolute left-4 -top-2.5 bg-white px-2 text-xs font-medium text-gray-600 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-blue-600 peer-focus:bg-white">
+                      Password
+                    </label>
+                  </div>
+
+                  <div class="relative">
+                    <input
+                      class="w-full px-4 py-3 text-sm border-2 text-gray-700 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all peer placeholder-transparent"
+                      type="password" name="confirmPassword" placeholder="Confirm Your Password" required
+                      id="confirmPassword" />
+                    <label for="confirmPassword"
+                      class="absolute left-4 -top-2.5 bg-white px-2 text-xs font-medium text-gray-600 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-blue-600 peer-focus:bg-white">
+                      Confirm Password
+                    </label>
+                  </div>
+
+                  <!-- User Type Selection -->
+                  <div class="space-y-3">
+                    <label class="text-sm font-semibold text-gray-700 block">I want to:</label>
+                    <div class="grid grid-cols-2 gap-3">
+                      <label class="relative flex items-center justify-center cursor-pointer">
+                        <input type="radio" name="userType" value="guest" required class="sr-only peer" <%=typeof
+                          oldInput !=='undefined' && oldInput.userType==='guest' ? 'checked' : '' %> />
+                        <div
+                          class="w-full px-4 py-3 text-sm font-medium text-center border-2 border-gray-200 rounded-xl peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 transition-all">
+                          <span class="block text-gray-400">👤 Guest</span>
+                          <span class="text-xs text-gray-500">Book stays</span>
+                        </div>
+                      </label>
+                      <label class="relative flex items-center justify-center cursor-pointer">
+                        <input type="radio" name="userType" value="host" required class="sr-only peer" <%=typeof
+                          oldInput !=='undefined' && oldInput.userType==='host' ? 'checked' : '' %> />
+                        <div
+                          class="w-full px-4 py-3 text-sm font-medium text-center border-2 border-gray-200 rounded-xl peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 transition-all">
+                          <span class="block text-gray-400">🏠 Host</span>
+                          <span class="text-xs text-gray-500">List properties</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Terms and Conditions -->
+                  <label class="flex items-start space-x-3 cursor-pointer group">
+                    <input type="checkbox" name="agreeTerms" required
+                      class="mt-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2" />
+                    <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">
+                      I agree to the
+                      <a href="#" class="text-blue-600 font-semibold hover:underline">Terms of Service</a>
+                      and
+                      <a href="#" class="text-blue-600 font-semibold hover:underline">Privacy Policy</a>
+                    </span>
+                  </label>
+
+                  <!-- Submit Button -->
+                  <button type="submit"
+                    class="mt-4 w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl">
+                    Create Account
+                  </button>
+
+                  <!-- Login Link -->
+                  <p class="text-center text-sm text-gray-600 mt-4">
+                    Already have an account?
+                    <a href="/login" class="text-blue-600 font-semibold hover:underline">
+                      Sign in here
+                    </a>
+                  </p>
+                </form>
+          </div>
+        </div>
+      </main>
+  </body>
+
+  </html>
