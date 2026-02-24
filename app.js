@@ -18,18 +18,17 @@ app.set("views", "views");
 const MONGO_URL = process.env.MONGO_URL;
 
 if (!MONGO_URL) {
-  console.error("MongoDB connection string is missing");
+  console.error("❌ MongoDB connection string is missing");
   process.exit(1);
 }
 
-// MongoDB connection options - SIRF YEH DO OPTIONS
+// ✅ SIMPLE OPTIONS - Sirf yeh do
 const mongoOptions = {
-  ssl: true,
-  tls: true,
-  tlsAllowInvalidCertificates: true, // For self-signed certs
-  retryWrites: true,
-  w: 'majority'
+  tls: true,  // TLS enable
+  tlsAllowInvalidCertificates: true  // Self-signed certs allow
 };
+
+console.log("🔄 Connecting to MongoDB...");
 
 // Connect to MongoDB
 mongoose
@@ -37,21 +36,20 @@ mongoose
   .then(() => {
     console.log("✅ Connected to MongoDB");
     
-    // Session store - AB YEH SAHI HAI
+    // Session store - with clean options
     const store = new MongoDBStore({
       uri: MONGO_URL,
       collection: "sessions",
       mongooseConnection: mongoose.connection,
-      // Session store options
+      // Clean options for session store
       connectionOptions: {
-        ssl: true,
         tls: true,
         tlsAllowInvalidCertificates: true
       }
     });
     
     store.on('error', (error) => {
-      console.log('Session store error:', error);
+      console.log('⚠️ Session store error:', error.message);
     });
     
     // Middleware
@@ -65,9 +63,9 @@ mongoose
         saveUninitialized: false,
         store: store,
         cookie: {
-          maxAge: 1000 * 60 * 60 * 24,
+          maxAge: 1000 * 60 * 60 * 24, // 1 day
           httpOnly: true,
-          secure: false // false for local, true for production with HTTPS
+          secure: process.env.NODE_ENV === 'production' // true in production with HTTPS
         }
       })
     );
@@ -98,12 +96,12 @@ mongoose
     
     const PORT = process.env.PORT || 3000;
     
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {  // Important: '0.0.0.0' for Railway
       console.log(`🚀 Server listening on port ${PORT}`);
     });
   })
   .catch((err) => {
     console.log("❌ Error while connecting to MongoDB:", err.message);
-    console.log("Connection string used:", MONGO_URL.replace(/:[^:@]+@/, ':****@')); // Hide password
+    console.log("Connection string used:", MONGO_URL.replace(/:[^:@]+@/, ':****@'));
     process.exit(1);
   });
