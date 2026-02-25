@@ -51,6 +51,22 @@ mongoose
     store.on("error", (error) => {
       console.log("⚠️ Session store error:", error.message);
     });
+    // app.js mein mongoose.connect ke baad, routes se pehle yeh add karo:
+
+// ✅ HEALTH CHECK ENDPOINT - Railway ke liye
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+// ✅ ROOT ROUTE - Jo localhost par dikh raha hai wahi
+app.get('/', (req, res) => {
+  res.render('store/index', { 
+    pageTitle: 'Airbnb - Home',
+    homes: [], // Apne homes fetch karo database se
+    isLoggedIn: req.session.isLoggedIn || false,
+    userType: req.session.user?.userType || null
+  });
+});
 
     // Middleware
     app.use(express.static(path.join(rootDir, "public")));
