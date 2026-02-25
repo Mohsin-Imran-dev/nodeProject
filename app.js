@@ -22,26 +22,24 @@ if (!MONGO_URL) {
   process.exit(1);
 }
 
-// ✅ SIMPLE OPTIONS - Sirf yeh do
+// MongoDB options
 const mongoOptions = {
-  tls: true, // TLS enable
-  tlsAllowInvalidCertificates: true, // Self-signed certs allow
+  tls: true,
+  tlsAllowInvalidCertificates: true,
 };
 
 console.log("🔄 Connecting to MongoDB...");
 
-// Connect to MongoDB
 mongoose
   .connect(MONGO_URL, mongoOptions)
   .then(() => {
     console.log("✅ Connected to MongoDB");
 
-    // Session store - with clean options
+    // Session store
     const store = new MongoDBStore({
       uri: MONGO_URL,
       collection: "sessions",
       mongooseConnection: mongoose.connection,
-      // Clean options for session store
       connectionOptions: {
         tls: true,
         tlsAllowInvalidCertificates: true,
@@ -51,22 +49,11 @@ mongoose
     store.on("error", (error) => {
       console.log("⚠️ Session store error:", error.message);
     });
-    // app.js mein mongoose.connect ke baad, routes se pehle yeh add karo:
 
-// ✅ HEALTH CHECK ENDPOINT - Railway ke liye
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
-
-// ✅ ROOT ROUTE - Jo localhost par dikh raha hai wahi
-app.get('/', (req, res) => {
-  res.render('store/index', { 
-    pageTitle: 'Airbnb - Home',
-    homes: [], // Apne homes fetch karo database se
-    isLoggedIn: req.session.isLoggedIn || false,
-    userType: req.session.user?.userType || null
-  });
-});
+    // ✅ HEALTH CHECK ENDPOINT - SABSE PEHLE
+    app.get('/health', (req, res) => {
+      res.status(200).send('OK');
+    });
 
     // Middleware
     app.use(express.static(path.join(rootDir, "public")));
@@ -79,11 +66,11 @@ app.get('/', (req, res) => {
         saveUninitialized: false,
         store: store,
         cookie: {
-          maxAge: 1000 * 60 * 60 * 24, // 1 day
+          maxAge: 1000 * 60 * 60 * 24,
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production", // true in production with HTTPS
+          secure: process.env.NODE_ENV === "production",
         },
-      }),
+      })
     );
 
     // Locals middleware
@@ -98,8 +85,8 @@ app.get('/', (req, res) => {
       next();
     });
 
-    // Routes
-    app.use(storeRouter);
+    // Routes - STORE ROUTER PEHLE (ismein / route hai)
+    app.use(storeRouter);  // ← YEH PEHLE AAYEGA
     app.use(authRouter);
 
     app.use("/host", (req, res, next) => {
@@ -113,7 +100,6 @@ app.get('/', (req, res) => {
     const PORT = process.env.PORT || 3000;
 
     app.listen(PORT, "0.0.0.0", () => {
-      // Important: '0.0.0.0' for Railway
       console.log(`🚀 Server listening on port ${PORT}`);
     });
   })
@@ -121,7 +107,7 @@ app.get('/', (req, res) => {
     console.log("❌ Error while connecting to MongoDB:", err.message);
     console.log(
       "Connection string used:",
-      MONGO_URL.replace(/:[^:@]+@/, ":****@"),
+      MONGO_URL.replace(/:[^:@]+@/, ":****@")
     );
     process.exit(1);
   });
