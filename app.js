@@ -58,21 +58,30 @@ mongoose
     // Middleware
     app.use(express.static(path.join(rootDir, "public")));
     app.use(express.urlencoded({ extended: true }));
+// app.js mein session wali line dhundho aur yeh changes karo:
 
-    app.use(
-      session({
-        secret: "Knowledge Gate AI",
-        resave: false,
-        saveUninitialized: false,
-        store: store,
-        cookie: {
-          maxAge: 1000 * 60 * 60 * 24,
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-        },
-      })
-    );
+app.use(
+  session({
+    secret: "Knowledge Gate AI",
+    resave: true,              // false se true karo
+    saveUninitialized: true,    // false se true karo
+    store: store,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+      secure: false,            // false hi rakho Railway pe
+      sameSite: 'lax'
+    },
+    name: 'connect.sid'         // add this line
+  })
+);
 
+app.use((req, res, next) => {
+  console.log("🔥 Session ID:", req.sessionID);
+  console.log("🔥 isLoggedIn:", req.session?.isLoggedIn);
+  console.log("🔥 User:", req.session?.user?.email);
+  next();
+});
     // Locals middleware
     app.use((req, res, next) => {
       res.locals.isLoggedIn = req.session.isLoggedIn;

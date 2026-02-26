@@ -9,37 +9,60 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
+// authController.js - postLogin function mein yeh changes karo:
+
 exports.postLogin = async (req, res, next) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(422).render("auth/login", {
-      pageTitle: "Login",
-      pageName: "Login",
-      isLoggedIn: false,
-      errors: ["User doesn't exist"],
-      oldInput: { email },
+  
+  try {
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(422).render("auth/login", {
+        pageTitle: "Login",
+        pageName: "Login",
+        isLoggedIn: false,
+        errors: ["User doesn't exist"],
+        oldInput: { email },
+      });
+    }
+    
+    const isMatch = await bcrypt.compare(password, user.password);
+    
+    if (!isMatch) {
+      return res.status(422).render("auth/login", {
+        pageTitle: "Login",
+        pageName: "Login",
+        isLoggedIn: false,
+        errors: ["Invalid Password"],
+        oldInput: { email },
+      });
+    }
+    
+    // Session set karo
+    req.session.isLoggedIn = true;
+    req.session.user = {
+      _id: user._id.toString(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      userType: user.userType,
+    };
+    
+    // ✅ Session save callback mein redirect karo
+    req.session.save(function(err) {
+      if(err) {
+        console.log("Session save error:", err);
+        return res.redirect("/login");
+      }
+      console.log("✅ Session saved for user:", user.email);
+      res.redirect("/");
     });
+    
+  } catch (error) {
+    console.log("Login error:", error);
+    res.redirect("/login");
   }
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(422).render("auth/login", {
-      pageTitle: "Login",
-      pageName: "Login",
-      isLoggedIn: false,
-      errors: ["Invalid Password"],
-      oldInput: { email },
-    });
-  }
-  req.session.isLoggedIn = true;
-  req.session.user = {
-    _id: user._id.toString(),
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    userType: user.userType,
-  };
-  res.redirect("/");
 };
 
 exports.postLogout = (req, res, next) => {
