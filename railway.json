@@ -1,13 +1,13 @@
 {
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "npm install"
+    "buildCommand": "npm run build"
   },
   "deploy": {
     "startCommand": "npm start",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 5,
     "restartPolicyType": "ON_FAILURE",
-    "port": 8080
+    "port": 3000
   }
 }
