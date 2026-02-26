@@ -31,7 +31,13 @@ exports.getBookings = (req, res, next) => {
   });
 };
 
+// ✅ SIRF YEH FUNCTION CHANGE KARO - user check add karo
 exports.getFavoriteList = async (req, res, next) => {
+  // Check if user exists in session
+  if (!req.session || !req.session.user || !req.session.user._id) {
+    return res.redirect("/login");
+  }
+  
   const userId = req.session.user._id;
   const user = await User.findById(userId).populate("favourites");
   res.render("store/favorite-list", {
@@ -42,7 +48,13 @@ exports.getFavoriteList = async (req, res, next) => {
   });
 };
 
+// ✅ AUR YEH FUNCTION CHANGE KARO - user check add karo
 exports.postAddToFavorites = async (req, res, next) => {
+  // Check if user exists in session
+  if (!req.session || !req.session.user || !req.session.user._id) {
+    return res.redirect("/login");
+  }
+  
   const homeId = req.body.id.toString();
   const userId = req.session.user._id;
   const user = await User.findById(userId);
@@ -53,7 +65,13 @@ exports.postAddToFavorites = async (req, res, next) => {
   res.redirect("/favourites");
 };
 
+// ✅ AUR YEH FUNCTION CHANGE KARO - user check add karo
 exports.postRemoveFromFavorites = async (req, res, next) => {
+  // Check if user exists in session
+  if (!req.session || !req.session.user || !req.session.user._id) {
+    return res.redirect("/login");
+  }
+  
   const homeId = req.params.homeId;
   const userId = req.session.user._id;
   const user = await User.findById(userId);
