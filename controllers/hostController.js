@@ -4,8 +4,8 @@ exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add Home to airbnd",
     pageName: "AddHome",
-    editing: false, 
-    isLoggedIn: req.isLoggedIn
+    editing: false,
+    isLoggedIn: req.isLoggedIn,
   });
 };
 
@@ -15,20 +15,19 @@ exports.addHostHome = (req, res, next) => {
       registeredHome: registeredHome,
       pageTitle: "Host Homes List",
       pageName: "Host Home",
-      isLoggedIn: req.isLoggedIn
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
 
 exports.postAddHome = (req, res, next) => {
-  const { houseName, price, location, rating, photoUrl, description } =
-    req.body;
+  const { houseName, price, location, rating, photo, description } = req.body;
   const home = new Home({
     houseName,
     price,
     location,
     rating,
-    photoUrl,
+    photo,
     description,
   });
   home.save().then(() => {
@@ -50,27 +49,26 @@ exports.getEditHome = (req, res, next) => {
       pageTitle: "Edit Your Home",
       pageName: "Host Home",
       editing: editing,
-      isLoggedIn: req.isLoggedIn
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
 
 exports.postEditHome = (req, res, next) => {
-  const { _id, houseName, price, location, rating, photoUrl, description } =
+  const { _id, houseName, price, location, rating, photo, description } =
     req.body;
   Home.findById(_id).then((home) => {
-    (home.houseName = houseName),
+    ((home.houseName = houseName),
       (home.price = price),
       (home.location = location),
       (home.rating = rating),
-      (home.photoUrl = photoUrl),
+      (home.photo = photo),
       (home.description = description),
       home.save().then((res) => {
         console.log("Home Updated Successfully" + res);
-      });
-       res.redirect("/host/host-home-list");
+      }));
+    res.redirect("/host/host-home-list");
   });
- 
 };
 
 exports.postDeleteHome = (req, res, next) => {
